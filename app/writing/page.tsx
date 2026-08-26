@@ -1,0 +1,6 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { PageHeading } from "@/components/page-heading";
+import { topics, writing } from "@/lib/content";
+export const metadata: Metadata = { title: "Writing", description: "Long-form thinking about engineering, systems, technology, learning, and life." };
+export default function WritingPage() { return <div className="shell inner-page"><PageHeading eyebrow="Writing" title="Essays, field notes, and working ideas." intro="Longer-form thinking about systems and the people who build them—plus the subjects that make a technical life more interesting." /><div className="writing-layout"><div className="editorial-list">{writing.map((item) => <article key={item.slug}><Link href={`/writing/${item.slug}`}><div className="writing-meta"><span>{item.category}</span><span>{item.readTime}</span><time>{item.date}</time></div><h2>{item.title}</h2><p>{item.description}</p><ul className="tag-list">{item.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul></Link></article>)}</div><aside className="topic-index"><p className="eyebrow">Browse by topic</p>{topics.map((topic) => <Link key={topic} href={`/topics/${topic.toLowerCase().replaceAll(" ", "-")}`}>{topic}</Link>)}</aside></div></div>; }

@@ -1,0 +1,3 @@
+import type { MetadataRoute } from "next";
+import { topics, writing } from "@/lib/content";
+export default function sitemap(): MetadataRoute.Sitemap { const base = "https://zee-digital-home.sites.openai.com"; const pages = ["", "/work", "/writing", "/projects", "/notes", "/about", "/now", "/resume"]; return [...pages.map((path) => ({ url: `${base}${path}`, lastModified: new Date() })), ...writing.map((item) => ({ url: `${base}/writing/${item.slug}`, lastModified: new Date() })), ...topics.map((topic) => ({ url: `${base}/topics/${topic.toLowerCase().replaceAll(" ", "-")}`, lastModified: new Date() }))]; }
