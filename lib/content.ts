@@ -2,9 +2,60 @@ export type WorkItem = { slug: string; title: string; eyebrow: string; summary: 
 export type WritingItem = { slug: string; title: string; description: string; date: string; readTime: string; category: string; tags: string[] };
 
 export const work: WorkItem[] = [
-  { slug: "observability-governance", title: "Observability governance at scale", eyebrow: "Platform engineering · Case study 01", summary: "A safer, clearer access model for a growing observability practice across engineering and QA.", challenge: "Teams needed useful access without turning permissions, API keys, and cost controls into permanent operational debt.", approach: "Designed role tiers, migration tooling, approval-aware automation, and a path for auditable service access.", outcome: "A repeatable operating model that made access intent clearer, reduced manual changes, and supported stronger governance.", technologies: ["Datadog", "Python", "CI/CD", "RBAC", "AWS"] },
-  { slug: "reliable-cloud-platforms", title: "Reliable cloud platform foundations", eyebrow: "Reliability · Case study 02", summary: "Operational patterns for Kubernetes workloads spanning cloud environments and ownership boundaries.", challenge: "Distributed services created uneven operational visibility, escalation paths, and infrastructure conventions.", approach: "Standardized infrastructure modules, delivery controls, on-call routing, and reliability signals around the critical path.", outcome: "A more legible platform: easier to operate, easier to review, and more resilient when ownership crosses team lines.", technologies: ["Kubernetes", "Terraform", "Azure", "AWS", "SRE"] },
-  { slug: "developer-automation", title: "Small tools, compounding leverage", eyebrow: "Developer experience · Case study 03", summary: "Focused automation that turns fragile, repetitive platform tasks into reviewable workflows.", challenge: "Routine administration depended on individual context and was difficult to verify before execution.", approach: "Built dry-run-first command-line tools with explicit inputs, artifacts, comparisons, and safe defaults.", outcome: "Lower cognitive load, better peer review, and operational changes that leave useful evidence behind.", technologies: ["Python", "TypeScript", "APIs", "GitHub", "Automation"] },
+  {
+    "slug": "hp-platform-automation",
+    "title": "SaaS platform automation and security",
+    "eyebrow": "HP Inc · Jun 2021 – Present",
+    "summary": "Immutable provisioning, centralized secrets management, and automated security controls for SaaS services.",
+    "challenge": "Support service reliability and release objectives while aligning platform automation with HP Cybersecurity standards.",
+    "approach": "Built Linux VM provisioning with Packer and Ansible, Python-based validation, and Vault secrets management using Ansible and Terraform. Integrated Trivy scanning into CI and automated policy enforcement and cleanup with AWS Lambda.",
+    "outcome": "Delivered centralized secrets management, contributed controls and evidence for SOC 2 Type I and Type II audits, and created tools and runbooks for team adoption. Partnered on CI/CD proofs of concept across Jenkins, GitHub, and TeamCity.",
+    "technologies": [
+      "Packer",
+      "Ansible",
+      "Terraform",
+      "Vault",
+      "Python",
+      "Trivy",
+      "AWS Lambda",
+      "CI/CD"
+    ]
+  },
+  {
+    "slug": "global-relay-infrastructure",
+    "title": "Infrastructure automation for 150+ hosts",
+    "eyebrow": "Global Relay · Jun 2020 – Jun 2021",
+    "summary": "Automated monthly patching and provisioning across Windows Server and CentOS, alongside CI/CD modernization.",
+    "challenge": "Manage monthly patching and infrastructure provisioning for more than 150 Windows Server and CentOS hosts.",
+    "approach": "Used Ansible, Bash, and Python with Jenkins; integrated Artifactory promotion and SonarQube analysis, and moved services to Docker and Kubernetes.",
+    "outcome": "Automated patching and provisioning, modernized delivery workflows, and implemented an authenticating HTTP/SOCKS proxy with standardized host aliases, fully qualified domain names, and domain locations.",
+    "technologies": [
+      "Ansible",
+      "Jenkins",
+      "Docker",
+      "Kubernetes",
+      "Bash",
+      "Python",
+      "Artifactory",
+      "SonarQube"
+    ]
+  },
+  {
+    "slug": "sycle-release-engineering",
+    "title": "Rolling deployments, without late-night releases",
+    "eyebrow": "Sycle.net · DevOps / Release Engineer · Jan 2017 – May 2020",
+    "summary": "Eliminated late-night releases and saved more than $100,000 annually in deployment costs.",
+    "challenge": "Coordinate build, test, and deployment workflows across 17 production, 23 staging, and 50+ development and testing environments.",
+    "approach": "Led rolling deployments and automated delivery workflows. Contributed to a Google Cloud disaster recovery solution and led adoption of Elasticsearch and Redis.",
+    "outcome": "Removed the need for late-night releases, reduced annual deployment costs by more than $100,000, and improved application performance and resilience.",
+    "technologies": [
+      "Rolling deployments",
+      "CI/CD",
+      "Google Cloud",
+      "Elasticsearch",
+      "Redis"
+    ]
+  }
 ];
 
 export const writing: WritingItem[] = [
@@ -30,7 +81,9 @@ export const notes = [
 
 export const topics = ["AI", "Kubernetes", "Reliability", "System design", "Learning", "Philosophy", "Investing", "BJJ"];
 export const searchItems = [
-  ...work.map((item) => ({ title: item.title, section: "Work", href: `/work#${item.slug}`, keywords: item.technologies.join(" ") })),
+  { title: "Zee Caniago · Résumé", section: "Profile", href: "/resume", keywords: "Staff Software Platform Engineer HP Global Relay Sycle.net Cackleberries Real Estate Channel Shell Canada experience education Simon Fraser University AWS Azure Google Cloud Terraform Ansible Packer Docker Kubernetes Jenkins TeamCity GitHub GitLab CI Bamboo Vault Trivy SOC 2 Python Go Bash JavaScript PHP Linux Windows Server Nginx HAProxy Squid MySQL MongoDB Redis Elasticsearch ELK New Relic Artifactory SonarQube contact PDF" },
+  { title: "About Zee", section: "Profile", href: "/about", keywords: "Vancouver background career" },
+  ...work.map((item) => ({ title: item.title, section: "Work", href: `/work#${item.slug}`, keywords: `${item.eyebrow} ${item.technologies.join(" ")}` })),
   ...writing.map((item) => ({ title: item.title, section: "Writing", href: `/writing/${item.slug}`, keywords: item.tags.join(" ") })),
   ...projects.map((item) => ({ title: item.title, section: "Projects", href: "/projects", keywords: item.tech })),
   ...notes.map((item) => ({ title: item.title, section: "Notes", href: "/notes", keywords: item.tags.join(" ") })),

@@ -1,5 +1,47 @@
 import type { Metadata } from "next";
 import { Download } from "lucide-react";
 import { PageHeading } from "@/components/page-heading";
-export const metadata: Metadata = { title: "Résumé", description: "Professional experience, selected accomplishments, skills, and education for Zee." };
-export default function ResumePage() { return <div className="shell inner-page resume-page"><div className="resume-top"><PageHeading eyebrow="Résumé" title="Platform / DevOps Engineer" intro="Cloud infrastructure, reliability engineering, automation, and developer platforms." /><a className="download-disabled" href="#resume-note" aria-describedby="resume-note"><Download size={16} /> PDF coming soon</a></div><section className="resume-section"><h2>Profile</h2><p>Platform engineer focused on making complex systems more reliable, secure, observable, and easier for teams to operate. Experienced across Kubernetes, infrastructure as code, cloud platforms, CI/CD, incident response, and developer tooling.</p></section><section className="resume-section"><h2>Selected experience</h2><div className="resume-entry"><header><div><h3>Platform / DevOps Engineering</h3><p>Enterprise SaaS platforms</p></div><span>Current</span></header><ul><li>Design and operate cloud and Kubernetes foundations across multi-team service environments.</li><li>Build automation for access governance, infrastructure delivery, and repeatable operational workflows.</li><li>Improve observability practices, on-call structures, and the connection between telemetry and engineering decisions.</li><li>Review architecture and infrastructure changes through reliability, security, cost, and blast-radius lenses.</li></ul></div></section><section className="resume-section skill-columns"><h2>Core skills</h2><div><p><strong>Platforms</strong>Kubernetes, AWS, Azure, Linux</p><p><strong>Infrastructure</strong>Terraform, CI/CD, GitHub, Azure DevOps</p><p><strong>Reliability</strong>Datadog, incident response, SRE, observability</p><p><strong>Building</strong>Python, Go, Bash, TypeScript, APIs</p></div></section><p id="resume-note" className="article-note">Add verified employment history, education, certifications, contact details, and a final PDF before sharing this page as a formal résumé.</p></div>; }
+import { earlyExperience, education, experience, expertise, profile } from "@/lib/resume";
+
+export const metadata: Metadata = {
+  title: "Résumé",
+  description: "Zee Caniago’s experience at HP, Global Relay, and Sycle.net, technical expertise, and education. Download the full résumé.",
+};
+
+export default function ResumePage() {
+  return <div className="shell inner-page resume-page">
+    <div className="resume-top">
+      <PageHeading eyebrow="Résumé" title={profile.name} intro={profile.title} />
+      <a className="resume-download" href={profile.pdf} download><Download size={16} /> Download PDF</a>
+    </div>
+    <address className="resume-contact">
+      <span>{profile.location}</span>
+      <a href={`mailto:${profile.email}`}>{profile.email}</a>
+      <a href="tel:+16043392105">{profile.phone}</a>
+      <a href={profile.linkedin}>LinkedIn</a>
+      <a href={profile.github}>GitHub</a>
+    </address>
+    <section className="resume-section"><h2>Profile</h2><p>{profile.summary}</p></section>
+    <section className="resume-section"><h2>Experience</h2><div className="resume-entries">
+      {experience.map((employer) => <article className="resume-entry" key={employer.company}>
+        <header><h3>{employer.company}</h3><span>{employer.dates}</span></header>
+        {employer.roles.map((role) => <div className="resume-role" key={role.title}>
+          <h4>{role.title}</h4>
+          {employer.roles.length > 1 && <p className="role-dates">{role.dates}</p>}
+          <ul>{role.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>
+        </div>)}
+      </article>)}
+    </div></section>
+    <section className="resume-section"><h2>Early experience</h2><div className="resume-entries early-experience">
+      {earlyExperience.map((role) => <article className="resume-entry" key={role.company}>
+        <header><div><h3>{role.company}</h3><p>{role.title}</p></div><span>{role.dates}</span></header>
+      </article>)}
+    </div></section>
+    <section className="resume-section skill-columns"><h2>Expertise &amp; technical depth</h2><div className="resume-skills">
+      {expertise.map((group) => <p key={group.name}><strong>{group.name}</strong>{group.skills}</p>)}
+    </div></section>
+    <section className="resume-section"><h2>Education</h2><div className="resume-entry">
+      <header><div><h3>{education.degree}</h3><p>{education.school}</p></div><span>{education.year}</span></header>
+    </div></section>
+  </div>;
+}
