@@ -1,9 +1,11 @@
+import Image from "next/image";
+
 export function Portrait({ large = false, personal = false }: { large?: boolean; personal?: boolean }) {
   const photo = personal
     ? { src: "/images/zee-family.png", alt: "Zee Caniago carrying his daughter on his shoulders", width: 1024, height: 1536 }
     : { src: "/images/zee-caniago.png", alt: "Black-and-white portrait of Zee Caniago", width: 1273, height: 1236 };
   return <figure className={large ? "portrait-large" : "portrait-frame"}>
-    <img
+    <Image
       className="portrait-photo"
       src={photo.src}
       alt={photo.alt}

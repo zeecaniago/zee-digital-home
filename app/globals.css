@@ -2,6 +2,11 @@
 @import "tw-animate-css";
 @import "../vendor/shadcn-tailwind-4.13.0.css";
 
+/* Utilities used by the retained UI catalog. */
+@utility scrollbar-thin { scrollbar-width: thin; }
+@utility scrollbar-none { scrollbar-width: none; }
+@utility scrollbar-gutter-stable { scrollbar-gutter: stable; }
+
 :root {
   --background: #0d0f12;
   --foreground: #ebe8df;
