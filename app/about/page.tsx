@@ -9,7 +9,7 @@ export default function AboutPage() {
   return <div className="shell inner-page">
     <PageHeading eyebrow="About" title="From application code to production operations." intro="I’m Zee Caniago, a Staff Software & Platform Engineer based in Vancouver, British Columbia." />
     <div className="about-grid">
-      <Portrait large />
+      <Portrait large personal />
       <div className="about-copy">
         <p>I bring 15+ years of experience across software development, cloud infrastructure, and production operations. My work connects the software people use with the platforms and processes that keep it running.</p>
         <p>At HP, I build automation for SaaS platforms: immutable Linux provisioning, centralized secrets management, deployment pipelines, and security controls. I partner with architecture, security, and delivery teams to improve reliability and make systems easier to operate.</p>
