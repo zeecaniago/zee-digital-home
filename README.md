@@ -1,113 +1,125 @@
-# vinext-starter
+# Zee — Digital Home
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+A standard Next.js App Router application with React, TypeScript, and Tailwind CSS.
+It runs on Node.js, deploys directly to AWS Amplify Hosting, or exports static files
+for Amazon S3 and CloudFront. All current content is generated at build time;
+search and navigation run in the browser. No database or authentication service is
+required.
 
-## Prerequisites
+Next.js is pinned to the patched 15.5 release line because [Amplify Hosting
+currently documents support through Next.js 15](https://docs.aws.amazon.com/amplify/latest/userguide/ssr-amplify-support.html).
+The former Vinext, Cloudflare Worker, D1 examples, and Sites-specific tooling have
+been removed. The site's pages, styles, images, search, and résumé PDF are retained.
 
-- Node.js `>=22.13.0`
-- Linux with `flock`, `curl`, and GNU `timeout`
+## Local development
 
-## Sites Lifecycle
+Use Node.js 22.13 or newer (Node.js 22 LTS is selected by `.nvmrc`). Run these commands
+from this repository's root:
 
-The Sites lifecycle CLI runs the locked dependency install before returning this checkout. Edit the source under `app/`, then checkpoint when a coherent milestone is ready to inspect or share. The remote Sites builder runs `npm run build` against the pushed commit. Do not repeat install or build as a normal pre-checkpoint step.
-
-This starter does not use `wrangler.jsonc`.
-
-`install:ci` is intentionally a single, non-retrying `npm ci`. It refuses a concurrent install for the same project, consumes a matching image-seeded npm cache with `--prefer-offline` while retaining registry fallback for a missing cache object, otherwise downloads and verifies the complete vinext tarball recorded in `package-lock.json`, limits npm to one socket, and terminates a stalled install. `build` applies a short timeout. These helpers target Linux and use GNU `timeout`; they are not native macOS scripts.
-
-Scripts that need writable project-scoped home, npm, XDG, and temporary paths use `scripts/sites-env.sh`. The `dev` and `start` scripts honor the caller's runtime environment and keep Wrangler logs inside the checkout. The generated `.sites-runtime/` directory is disposable and ignored by Git.
-
-## Included Shape
-
-- edit site code under `app/`
-- `app/chatgpt-auth.ts` provides optional dispatch-owned ChatGPT sign-in helpers
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/index.ts` reads the D1 binding from the Cloudflare Worker environment
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
-
-## Workspace Auth Headers
-
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```sh
+nvm install
+nvm use
+npm ci
+cp .env.example .env.local
+npm run dev
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+Open <http://localhost:3000>. Set `SITE_URL` in `.env.local` to your public origin
+before a production build, for example `https://your-domain.example`. Metadata,
+RSS, robots.txt, and the sitemap use this value at **build time**. It defaults to
+`http://localhost:3000` for local use; changing the domain requires a rebuild.
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+## Standard Node.js deployment
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- In a Server Component, start sign-in with
-  `<a href={chatGPTSignInPath(returnTo)} target="_top">`. The auth helper
-  module is server-only; do not import it into a Client Component.
-- Do not use `fetch`, XHR, a client-side router, or a framework link that can
-  prefetch the sign-in route. SIWC must start as a top-level navigation.
-- Never request the AuthAPI authorization endpoint directly. The dispatch-owned
-  `/signin-with-chatgpt` route must start the SIWC flow.
-- Use `chatGPTSignOutPath(returnTo)` for browser sign-out links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+```sh
+npm run build
+npm start
+```
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+`build` produces `.next/`; `start` runs the normal Next.js production server.
+Set `PORT` or run `npm start -- --port 8080` to choose a port. Keep `public/`,
+`.next/`, `next.config.ts`, `package.json`, and installed dependencies with the app.
+This mode supports adding server routes or other Node.js features later.
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+## AWS Amplify Hosting
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+1. Connect this repository and select the branch to deploy.
+2. Use the Amazon Linux 2023 build image. The included `amplify.yml` installs
+   Node.js 22, runs `npm ci` and `npm run build`, and publishes `.next/` using
+   Amplify's Next.js hosting integration.
+3. Add `SITE_URL` as an Amplify build environment variable, with the HTTPS custom
+   domain or the assigned Amplify branch URL. Redeploy after changing it.
+4. Keep `NEXT_OUTPUT` unset for this deployment and keep the output directory as
+   `.next`. Do not add a catch-all rewrite to `/index.html`; each page has its own
+   route.
 
-## Diagnostic Commands
+This build specification assumes the repository root contains `package.json` and
+`amplify.yml`. If you move the project into a monorepo, set the Amplify application
+root accordingly. See [AWS's Next.js deployment instructions](https://docs.aws.amazon.com/amplify/latest/userguide/deploy-nextjs-app.html).
 
-- `npm run install:ci`: perform the one bounded lockfile install
-- `npm run dev`: start the Vite/Vinext development server
-- `npm run build`: build the deployable Sites artifact
-- `npm run start`: start the built Vinext application
-- `npm test`: build and verify the rendered development-preview metadata
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+## Amazon S3 and CloudFront
 
-Use build commands for targeted diagnosis after a remote failure, not as part of the normal checkpoint path.
+S3 serves files; it does not run Node.js. Generate a static export instead:
 
-The timeout defaults can be overridden for a controlled canary with `SITES_INSTALL_TIMEOUT`, `SITES_INSTALL_KILL_AFTER`, `SITES_BUILD_TIMEOUT`, and `SITES_BUILD_KILL_AFTER`. A timeout fails the command; the helpers never retry an unchanged install or build.
+```sh
+npm run build:static
+```
 
-## Learn More
+The deployable website is in `out/`, including all article and topic pages,
+`rss.xml`, `robots.txt`, `sitemap.xml`, images, browser JavaScript, and the résumé
+PDF. A page such as `/about/` becomes `out/about/index.html`. Upload the **contents**
+of `out/` to the bucket root, preserving directories.
 
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+For a private S3 bucket behind CloudFront:
+
+1. Use the S3 REST endpoint as the origin, with Origin Access Control and the
+   corresponding bucket policy granting your distribution read access.
+2. Set the default root object to `index.html`.
+3. Create a CloudFront Function using JavaScript runtime 2.0 and the code in
+   `deploy/cloudfront-function.js`. Publish it and associate it with the default
+   behavior's **viewer-request** event. It maps page URLs to their directory index
+   while preserving asset URLs, RSS, and Next.js navigation data.
+4. Configure custom error responses for both 403 and 404 to serve `/404.html`
+   with HTTP status **404**. Do not route missing pages to the homepage.
+5. Redirect HTTP to HTTPS. After uploading a new build, invalidate the distribution
+   cache or use an equivalent deployment cache policy so HTML and route data update
+   together.
+
+If using the S3 **website endpoint** instead, configure `index.html` as the index
+document and `404.html` as the error document. Directory indexes are handled by S3;
+the CloudFront Function is for the private REST-origin setup above.
+
+Static export supports the current site in full. Request-time authentication,
+Server Actions, database writes, or other dynamic server features would require
+Node.js/Amplify hosting. See [Next.js static exports](https://nextjs.org/docs/app/guides/static-exports)
+and [AWS's CloudFront directory-index example](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/example_cloudfront_functions_url_rewrite_single_page_apps_section.html).
+
+`build:static` replaces the local `.next/` build as well as producing `out/`.
+Run `npm run build` again before using `npm start` after an export.
+
+## Validation
+
+```sh
+npm run lint
+npm run typecheck
+npm test
+npm run test:static
+```
+
+The Node tests launch the production Next.js server, visit every prerendered route,
+and verify redirects, 404s, RSS, the PDF download, UI component behavior, and
+CloudFront routing. Static tests check every exported page, its browser assets and
+navigation data, metadata, feed, and public files. To validate a deployment origin:
+
+```sh
+SITE_URL=https://your-domain.example npm run test:static
+```
+
+## Content
+
+- `app/`: pages, layout, styles, RSS, robots, and sitemap.
+- `lib/content.ts`: work, writing, topics, projects, notes, and search data.
+- `lib/resume.ts`: professional profile and résumé data.
+- `lib/site.ts`: shared public origin.
+- `public/`: images, favicon, and downloadable résumé.
+- `content/`: existing MDX drafts; these are not currently loaded by the pages.
