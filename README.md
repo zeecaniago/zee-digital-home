@@ -99,6 +99,14 @@ Run `npm run build` again before using `npm start` after an export.
 
 ## Validation
 
+GitHub Actions runs the `Site checks` job on pull requests targeting `main` and
+on pushes to `main`. It uses Node.js from `.nvmrc`, installs locked dependencies
+with `npm ci`, and runs lint, TypeScript checks, and `npm test` (which includes the
+production build). CI builds use `https://zee-c.dev` as `SITE_URL`.
+The workflow validates the site; deployment is configured separately in Amplify.
+To require passing CI before a merge, select `Site checks` in the protection rules
+for `main` after the first workflow run.
+
 ```sh
 npm run lint
 npm run typecheck
