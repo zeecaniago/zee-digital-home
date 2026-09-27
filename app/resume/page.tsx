@@ -32,13 +32,13 @@ export default function ResumePage() {
         </div>)}
       </article>)}
     </div></section>
+    <section className="resume-section skill-columns"><h2>Expertise</h2><div className="resume-skills">
+      {expertise.map((group) => <p key={group.name}><strong>{group.name}</strong>{group.skills}</p>)}
+    </div></section>
     <section className="resume-section"><h2>Early experience</h2><div className="resume-entries early-experience">
       {earlyExperience.map((role) => <article className="resume-entry" key={role.company}>
         <header><div><h3>{role.company}</h3><p>{role.title}</p></div><span>{role.dates}</span></header>
       </article>)}
-    </div></section>
-    <section className="resume-section skill-columns"><h2>Expertise &amp; technical depth</h2><div className="resume-skills">
-      {expertise.map((group) => <p key={group.name}><strong>{group.name}</strong>{group.skills}</p>)}
     </div></section>
     <section className="resume-section"><h2>Education</h2><div className="resume-entry">
       <header><div><h3>{education.degree}</h3><p>{education.school}</p></div><span>{education.year}</span></header>
