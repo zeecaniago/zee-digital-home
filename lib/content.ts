@@ -1,5 +1,5 @@
 export type WorkItem = { slug: string; title: string; eyebrow: string; summary: string; challenge: string; approach: string; outcome: string; technologies: string[] };
-export type WritingItem = { slug: string; title: string; description: string; date: string; readTime: string; category: string; tags: string[] };
+export type WritingItem = { slug: string; title: string; description: string; date: string; publishedTime?: string; readTime: string; category: string; tags: string[] };
 
 export const work: WorkItem[] = [
   {
@@ -59,6 +59,7 @@ export const work: WorkItem[] = [
 ];
 
 export const writing: WritingItem[] = [
+  { slug: "the-hand-that-becomes-the-blade", title: "The Hand That Becomes the Blade", description: "AI, exteriorization, and the question of human agency", date: "Sep 26, 2026", publishedTime: "2026-09-26", readTime: "6 min", category: "Ideas", tags: ["ai", "philosophy", "technology", "agency"] },
   { slug: "reliability-is-a-product-decision", title: "Reliability is a product decision", description: "Why resilient systems begin with explicit choices about users, failure, and trade-offs—not monitoring tools.", date: "Aug 18, 2026", readTime: "6 min", category: "Engineering", tags: ["reliability", "systems"] },
   { slug: "tools-that-expand-capability", title: "Tools that expand capability", description: "A working philosophy for building software that leaves people more capable than it found them.", date: "Aug 09, 2026", readTime: "5 min", category: "Ideas", tags: ["philosophy", "technology"] },
   { slug: "learning-in-public-without-performing", title: "Learning in public—without performing", description: "Notes on curiosity, unfinished thinking, and documenting the path without pretending to have arrived.", date: "Jul 28, 2026", readTime: "4 min", category: "Learning", tags: ["learning", "career"] },
