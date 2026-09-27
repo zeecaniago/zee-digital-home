@@ -17,7 +17,6 @@ export default function ResumePage() {
     <address className="resume-contact">
       <span>{profile.location}</span>
       <a href={`mailto:${profile.email}`}>{profile.email}</a>
-      <a href="tel:+16043392105">{profile.phone}</a>
       <a href={profile.linkedin}>LinkedIn</a>
       <a href={profile.github}>GitHub</a>
     </address>

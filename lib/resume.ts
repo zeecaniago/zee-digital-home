@@ -3,7 +3,6 @@ export const profile = {
   title: "Staff Software & Platform Engineer",
   location: "Vancouver, British Columbia",
   email: "zee.caniago@gmail.com",
-  phone: "+1 604 339 2105",
   github: "https://github.com/zeecaniago",
   linkedin: "https://www.linkedin.com/in/zeecaniago",
   pdf: "/Zee_Caniago_Resume.pdf",
