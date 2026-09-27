@@ -1,3 +1,5 @@
+import { earlyExperience, education, experience, expertise, profile } from "./resume";
+
 export type WorkItem = { slug: string; title: string; eyebrow: string; summary: string; challenge: string; approach: string; outcome: string; technologies: string[] };
 export type WritingItem = { slug: string; title: string; description: string; date: string; publishedTime?: string; readTime: string; category: string; tags: string[] };
 
@@ -82,7 +84,13 @@ export const notes = [
 
 export const topics = ["AI", "Kubernetes", "Reliability", "System design", "Learning", "Philosophy", "Investing", "BJJ"];
 export const searchItems = [
-  { title: "Zee Caniago · Résumé", section: "Profile", href: "/resume", keywords: "Staff Software Platform Engineer HP Global Relay Sycle.net Cackleberries Real Estate Channel Shell Canada experience education Simon Fraser University AWS Azure Google Cloud Terraform Ansible Packer Docker Kubernetes Jenkins TeamCity GitHub GitLab CI Bamboo Vault Trivy SOC 2 Python Go Bash JavaScript PHP Linux Windows Server Nginx HAProxy Squid MySQL MongoDB Redis Elasticsearch ELK New Relic Artifactory SonarQube contact PDF" },
+  { title: "Zee Caniago · Résumé", section: "Profile", href: "/resume", keywords: [
+    profile.title, profile.summary,
+    ...experience.flatMap(({ company, roles }) => [company, ...roles.flatMap((role) => [role.title, ...role.bullets])]),
+    ...expertise.map(({ name, skills }) => `${name} ${skills}`),
+    ...earlyExperience.map(({ company, title }) => `${company} ${title}`),
+    education.school, education.degree, "experience education contact PDF",
+  ].join(" ") },
   { title: "About Zee", section: "Profile", href: "/about", keywords: "Vancouver background career" },
   ...work.map((item) => ({ title: item.title, section: "Work", href: `/work#${item.slug}`, keywords: `${item.eyebrow} ${item.technologies.join(" ")}` })),
   ...writing.map((item) => ({ title: item.title, section: "Writing", href: `/writing/${item.slug}`, keywords: item.tags.join(" ") })),

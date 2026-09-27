@@ -18,13 +18,15 @@ export const experience = [
       title: "Staff Software & Platform Engineer",
       dates: "Jun 2021 – Present",
       bullets: [
-        "Led automation and deployment improvements for SaaS services, working with delivery teams to meet service reliability and release objectives.",
+        "Led infrastructure and deployment automation for SaaS services using Terraform, Kubernetes (AKS/EKS), Docker, Python, and Bash.",
+        "Partnered with delivery teams to strengthen CI/CD workflows and release processes using Azure DevOps, Codeway, TeamCity, and GitHub, improving operational readiness and supporting release objectives.",
+        "Improved observability and service health monitoring with Datadog, Splunk, Sysdig, and OpenTelemetry; automated Datadog alerting and on-call workflows to support service reliability.",
         "Built immutable Linux VM provisioning with Packer and Ansible, with Python-based infrastructure validation to support adoption by engineering teams.",
         "Delivered centralized secrets management using Vault, Ansible, and Terraform, aligned with HP Cybersecurity standards.",
         "Contributed to SOC 2 Type I and Type II audits by standardizing and automating controls, collecting evidence, and coordinating with engineering, security, and external auditors.",
         "Integrated Trivy vulnerability scanning into CI pipelines; automated policy enforcement and resource cleanup with AWS Lambda.",
         "Partnered with the Platform Architect on proofs of concept for consistent CI/CD patterns across Jenkins, GitHub, and TeamCity.",
-        "Created internal tools, runbooks, and technical documentation to support team adoption and ongoing platform maintenance.",
+        "Created internal tools for access and role automation, pre-flight validation, and certificate management, with runbooks and documentation to support team adoption.",
       ],
     }],
   },
@@ -71,15 +73,12 @@ export const earlyExperience = [
 ];
 
 export const expertise = [
-  { name: "Cloud platforms", skills: "AWS, Azure, Google Cloud" },
-  { name: "Infrastructure", skills: "Terraform, Ansible, Packer, Docker, Kubernetes" },
-  { name: "Delivery", skills: "Jenkins, TeamCity, GitHub, GitLab CI, Bamboo" },
-  { name: "Security", skills: "Vault, Trivy, SOC 2 controls" },
-  { name: "Languages", skills: "Python, Go, Bash, JavaScript, PHP" },
-  { name: "Systems", skills: "Linux, Windows Server, Nginx, HAProxy, Squid" },
-  { name: "Data", skills: "MySQL, MongoDB, Redis, Elasticsearch" },
-  { name: "Operations", skills: "ELK, New Relic, disaster recovery, rolling deployments" },
-  { name: "Pipeline tooling", skills: "Artifactory, SonarQube, Git, Bash, Python" },
+  { name: "Infrastructure & cloud", skills: "Terraform, Azure, AWS, AKS, EKS, Kubernetes" },
+  { name: "CI/CD & release automation", skills: "Azure DevOps, Codeway, TeamCity, GitHub Enterprise, GitHub Actions" },
+  { name: "Containers & deployment", skills: "Docker, Kubernetes, Helm" },
+  { name: "Automation & scripting", skills: "Python, Bash, Go" },
+  { name: "Observability & reliability", skills: "Datadog, Splunk, Sysdig, OpenTelemetry" },
+  { name: "Networking & platform services", skills: "Cloudflare, Redis, HiveMQ" },
 ];
 
 export const education = { degree: "Bachelor of Applied Science", school: "Simon Fraser University", year: "2010" };
