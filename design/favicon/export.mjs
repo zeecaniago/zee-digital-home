@@ -1,0 +1,12 @@
+import sharp from 'sharp';
+import fs from 'node:fs/promises';
+const svg=await fs.readFile('public/favicon.svg');
+const icon=async(size)=>sharp(svg,{density:384}).resize(size,size).png().toBuffer();
+for (const size of [16,32,48,180,512]) await fs.writeFile(`design/favicon/icon-${size}.png`,await icon(size));
+await fs.copyFile('design/favicon/icon-180.png','public/apple-touch-icon.png');
+const sizes=[16,32,48], images=await Promise.all(sizes.map(icon));
+const header=Buffer.alloc(6+16*sizes.length);header.writeUInt16LE(1,2);header.writeUInt16LE(sizes.length,4);let offset=header.length;
+sizes.forEach((s,i)=>{let p=6+16*i;header[p]=s;header[p+1]=s;header.writeUInt16LE(1,p+4);header.writeUInt16LE(32,p+6);header.writeUInt32LE(images[i].length,p+8);header.writeUInt32LE(offset,p+12);offset+=images[i].length;});
+await fs.writeFile('public/favicon.ico',Buffer.concat([header,...images]));
+const base=Buffer.from(`<svg width="1000" height="560" xmlns="http://www.w3.org/2000/svg"><rect width="1000" height="560" rx="24" fill="#121519"/><text x="48" y="58" fill="#a6b892" font-family="Arial" font-size="13" letter-spacing="3">ZEE · BROWSER ICON</text><text x="390" y="159" fill="#ebe8df" font-family="Georgia" font-size="42">A small signature.</text><text x="392" y="198" fill="#92969d" font-family="Arial" font-size="17">Ivory serif. Sage dot. Charcoal canvas.</text><rect x="392" y="245" width="544" height="66" rx="12" fill="#20252a"/><text x="438" y="284" fill="#ebe8df" font-family="Arial" font-size="15">Zee Caniago — Staff Software &amp; Platform Engineer</text><rect x="392" y="328" width="544" height="66" rx="12" fill="#eeeef0"/><text x="438" y="367" fill="#333638" font-family="Arial" font-size="15">Zee Caniago — Staff Software &amp; Platform Engineer</text><text x="64" y="476" fill="#92969d" font-family="Arial" font-size="13">16 px</text><text x="160" y="476" fill="#92969d" font-family="Arial" font-size="13">32 px</text><text x="263" y="476" fill="#92969d" font-family="Arial" font-size="13">48 px</text></svg>`);
+await sharp(base).composite([{input:await icon(256),left:58,top:128},{input:await icon(16),left:406,top:270},{input:await icon(16),left:406,top:353},{input:await icon(16),left:74,top:422},{input:await icon(32),left:164,top:414},{input:await icon(48),left:258,top:406}]).png().toFile('design/favicon/preview.png');
