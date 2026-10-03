@@ -61,13 +61,17 @@ export const work: WorkItem[] = [
 ];
 
 export const writing: WritingItem[] = [
+  { slug: "building-mereday", title: "Building Mereday: a little order, with a way back", description: "Notes on building a native Mac app for Desktop and Downloads, and why previews, receipts, and Undo belong at the center of everyday automation.", date: "Oct 02, 2026", publishedTime: "2026-10-02", readTime: "4 min", category: "Building", tags: ["macos", "automation", "reliability", "technology"] },
   { slug: "the-hand-that-becomes-the-blade", title: "The Hand That Becomes the Blade", description: "AI, exteriorization, and the question of human agency", date: "Sep 26, 2026", publishedTime: "2026-09-26", readTime: "6 min", category: "Ideas", tags: ["ai", "philosophy", "technology", "agency"] },
   { slug: "reliability-is-a-product-decision", title: "Reliability is a product decision", description: "Why resilient systems begin with explicit choices about users, failure, and trade-offs—not monitoring tools.", date: "Aug 18, 2026", readTime: "6 min", category: "Engineering", tags: ["reliability", "systems"] },
   { slug: "tools-that-expand-capability", title: "Tools that expand capability", description: "A working philosophy for building software that leaves people more capable than it found them.", date: "Aug 09, 2026", readTime: "5 min", category: "Ideas", tags: ["philosophy", "technology"] },
   { slug: "learning-in-public-without-performing", title: "Learning in public—without performing", description: "Notes on curiosity, unfinished thinking, and documenting the path without pretending to have arrived.", date: "Jul 28, 2026", readTime: "4 min", category: "Learning", tags: ["learning", "career"] },
 ];
 
-export const projects = [
+export type ProjectItem = { title: string; status: string; summary: string; tech: string; href?: string; articleHref?: string };
+
+export const projects: ProjectItem[] = [
+  { title: "Mereday", status: "In development", summary: "My latest project: a native Mac app that tidies Desktop and sorts Downloads, with file previews, receipts, and Undo. Explore the demo while the Mac download is in development.", tech: "Swift · SwiftUI · macOS", href: "https://mereday.app", articleHref: "/writing/building-mereday" },
   { title: "Baymax", status: "Active", summary: "A small, humane budgeting system built around natural-language expense capture.", tech: "Python · SQLite · Automation" },
   { title: "Mario Overseer", status: "Experiment", summary: "An operational interface exploring how focused tools can simplify platform supervision.", tech: "FastAPI · Streamlit · Cloud APIs" },
   { title: "Rolecraft", status: "Open Source", summary: "Dry-run-first access automation patterns for comparing and evolving complex role models.", tech: "Python · CLI · RBAC" },
