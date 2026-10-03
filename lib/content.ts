@@ -61,7 +61,7 @@ export const work: WorkItem[] = [
 ];
 
 export const writing: WritingItem[] = [
-  { slug: "building-mereday", title: "Building Mereday: a little order, with a way back", description: "Notes on building a native Mac app for Desktop and Downloads, and why previews, receipts, and Undo belong at the center of everyday automation.", date: "Oct 02, 2026", publishedTime: "2026-10-02", readTime: "4 min", category: "Building", tags: ["macos", "automation", "reliability", "technology"] },
+  { slug: "building-mereday", title: "Building Mereday", description: "A native Mac app for organizing Desktop and Downloads files, with previews, receipts, and Undo.", date: "Oct 02, 2026", publishedTime: "2026-10-02", readTime: "4 min", category: "Building", tags: ["macos", "automation", "reliability", "technology"] },
   { slug: "the-hand-that-becomes-the-blade", title: "The Hand That Becomes the Blade", description: "AI, exteriorization, and the question of human agency", date: "Sep 26, 2026", publishedTime: "2026-09-26", readTime: "6 min", category: "Ideas", tags: ["ai", "philosophy", "technology", "agency"] },
   { slug: "reliability-is-a-product-decision", title: "Reliability is a product decision", description: "Why resilient systems begin with explicit choices about users, failure, and trade-offs—not monitoring tools.", date: "Aug 18, 2026", readTime: "6 min", category: "Engineering", tags: ["reliability", "systems"] },
   { slug: "tools-that-expand-capability", title: "Tools that expand capability", description: "A working philosophy for building software that leaves people more capable than it found them.", date: "Aug 09, 2026", readTime: "5 min", category: "Ideas", tags: ["philosophy", "technology"] },
